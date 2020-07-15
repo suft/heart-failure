@@ -19,7 +19,7 @@ death_event = csv(:,13)
 % Column 1: age
 
 age_out = find(isoutlier(age.'))
-invalid_age = find(csv(:, 1) < 0);
+invalid_age = find(age < 0);
 fprintf('Invalid Ages: %i\n', length(invalid_age));
 
 % Column 2: anaemia
