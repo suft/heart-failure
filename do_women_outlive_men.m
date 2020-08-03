@@ -67,8 +67,8 @@ legend('Male Deaths', 'Female Deaths')
 
 
 %percentage of male vs female living past 65
-past_65_men = sum(sex==0 &age > 65 &death_event==0)
-past_65_female = sum(sex==1 & age>65 &death_event==0)
+past_65_men = sum(sex==0 & age > 65 &death_event==0)
+past_65_female = sum(sex==1 & age > 65 &death_event==0)
 
 %finding deceased men and women who happend to have high blood pressure
 bp_men = sum(sex==0 & death_event==1 & bp==1)
