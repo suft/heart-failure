@@ -92,14 +92,14 @@ smoking_women =  sum(sex==1 & death_event==1 & smoking==1)
 subplot(2,2,1)
 x = [smoking_men smoking_women]
 pie(x)
-legend("Men","Women")
+legend("Male","Female")
 title("Percenteage of Deceased who were smokers")
 
 %percentage of men smoking vs percentage of women smoking(deceased)
 subplot(2,2,2)
 x = [diabetes_men diabetes_women]
 pie(x)
-legend("Men","Women")
+legend("Male","Female")
 title("Percentage of Deceased with Diabetes")
 
 %percentage of men with high blood pressure vs percentage of women with
@@ -107,12 +107,12 @@ title("Percentage of Deceased with Diabetes")
 subplot(2,2,3)
 x = [bp_men bp_women]
 pie(x)
-legend("Men","Women")
+legend("Male","Female")
 title("Percentage of Deceased with High Blood Pressure")
 
 %percentage of men living past 65 vs percentage of women living past 65
 subplot(2,2,4)
 x = [past_65_men past_65_female]
 pie(x)
-legend("Men","Women")
-title("Percentage of Women VS. Men living past 65")
+legend("Male","Female")
+title("Percentage of Male VS. Female living past 65")
