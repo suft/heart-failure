@@ -1,20 +1,22 @@
 % Do women outlive men? 
 
-% In this M file, box-plot is drawn for the ages of deceased men and women
-% Pie charts are drawn to analyze the factors that might affect the death
-% of both genders.
+% In this M file, a  box-plot is drawn for the ages of deceased men and women
+% Pie charts are drawn to analyze the possible clinical factors that might
+% have contributed to the death in both genders 
 
 %importing the data set 
 
 csv = xlsread('heart_failure_clinical_records_dataset.xlsx');
 
-% defining the variables
+% reading the variables
 age = csv(:, 1);
 
 %identifying the NaN values
 idx = isnan(age)
+
 %removing the NaN values
 age(idx)=[]
+
 ejectionFraction = csv(:,5)
 bp = csv(:,6)
 death_event = csv(:, 13);
@@ -22,53 +24,87 @@ sex = csv(:, 10);
 diabetes = csv(:,4);
 smoking = csv(:,11);
 
-%outliers 
+%identifying the outliers 
 age_out = find(isoutlier(age'));
 
-% identifying the missing age values 
-
+% identifying if there are any values missing 
+% using the built-in function
 age_missing = sum(ismissing(age));
 
-% validity check 
-
+% validity check, there can't be a negative age 
 invalid_age = find(age < 0);
 
-%the ages of all the males and the females who died
+%filtering the deceased by gender and finding the age
+
+% male
 dead_male_age = age(sex==0 & death_event==1)
 
+%female
 dead_female_age =age(sex==1 & death_event==1);
 
-% the below plots compare the ages that men and women die at
+% using the user defined function summary, we create a table for the
+% statistical analysis
+
+% calculating the statistical summary for deceased males(with outliers)
+[mn, q1, med, q3, mx, mu, sig] = summary(dead_male_age)
+ 
+ Summary_Statistics = {'Size'; 'Min'; 'Lower Quartile'; 'Max'; 'Upper Quartile';'Mean'; 'Median'; 'Variance'; 'Standard Deviation'}   
+ Male = {length(dead_male_age); mn; q1; mx; q3; mu; med; sig.^2; sig}
+ % calculating the statistical summary for deceased females(with outliers)   
+ [mn, q1, med, q3, mx, mu, sig] = summary(dead_female_age)
+ Female = {length(dead_female_age); mn; q1; mx; q3; mu; med; sig.^2; sig}
+ % constructing the summary table
+ table(Summary_Statistics, Male, Female)
+
+
+
+% the following segment of code filters the data from the outliers
+%
+%
+%
+
+%removing outliers from age column for both genders
+dead_female_age_noOut = round(rmoutliers(dead_female_age))
+dead_male_age_noOut = round(rmoutliers(dead_male_age))
+
+% summary table without the outliers
+ % calculating the statistical summary for deceased males(with outliers)   
+[mn, q1, med, q3, mx, mu, sig] = summary(dead_male_age_noOut)
+Summary_Statistics = {'Size'; 'Min'; 'Lower Quartile'; 'Max'; 'Upper Quartile';'Mean'; 'Median'; 'Variance'; 'Standard Deviation'} 
+Male = {length(dead_male_age_noOut); mn; q1; mx; q3; mu; med; sig.^2; sig}
+ % calculating the statistical summary for deceased females(with outliers)   
+[mn, q1, med, q3, mx, mu, sig] = summary(dead_female_age)
+Female = {length(dead_female_age_noOut); mn; q1; mx; q3; mu; med; sig.^2; sig}
+table(Summary_Statistics, Male, Female)
+
+
 
 subplot(1,2,1)
 %box-plot for deceased men and their ages
-boxplot(dead_male_age, 'Labels', {'Male'})
+boxplot(dead_male_age_noOut, 'Labels', {'Male'})
 xlabel("Deceased")
 title("Ages of Deceased Male")
 ylabel("Age")
 
 subplot(1,2,2)
 %box-plot for deceased women and their ages
-boxplot(dead_female_age,'Labels', {'Female'})
+boxplot(dead_female_age_noOut,'Labels', {'Female'})
 title("Ages of Deceased Female")
 xlabel("Deceased")
 ylabel("Age")
 
-
-%histogram for frequency of deaths within particular age brackets(male and female)
-histogram(dead_male_age)
-hold on;
-histogram(dead_female_age)
-title('Frequency of deaths by sex and age')
-xlabel('Age')
-ylabel('Deaths')
-legend('Male Deaths', 'Female Deaths')
+% In the following code segment, filteration of clinical factors is done by
+% gender to determine what could have contributed to the death in both
+% gender
 
 
+%amount of men living past 65
+past_65_men = age(sex==0 & death_event==0)
+total_men = sum(past_65_men > 65)
 
-%percentage of male vs female living past 65
-past_65_men = sum(sex==0 & age > 65 &death_event==0)
-past_65_female = sum(sex==1 & age > 65 &death_event==0)
+% amount of women living past 65
+past_65_female = age(sex==1 & death_event==0)
+total_women = sum(past_65_female > 65)
 
 %finding deceased men and women who happend to have high blood pressure
 bp_men = sum(sex==0 & death_event==1 & bp==1)
@@ -112,7 +148,7 @@ title("Percentage of Deceased with High Blood Pressure")
 
 %percentage of men living past 65 vs percentage of women living past 65
 subplot(2,2,4)
-x = [past_65_men past_65_female]
+x = [total_men total_women]
 pie(x)
 legend("Male","Female")
 title("Percentage of Male VS. Female living past 65")
