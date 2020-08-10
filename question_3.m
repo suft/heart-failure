@@ -1,4 +1,3 @@
-
 %Import the excel data to matlab 
 csv = readmatrix('heart_failure_clinical_records_dataset.csv');
 
@@ -7,12 +6,6 @@ diabetes = csv(:, 4);
 smoking = csv(:, 11);
 deathEvent = csv(:, 13);
 age = csv(:,1);
-
-%Validity and Outlier check
-age_out = find(isoutlier(age'));
-invalid_age = find(age < 0);
-fprintf('Age Outlier Indexes -> %s\n', mat2str(age_out));
-fprintf('Invalid Ages: %i\n', length(invalid_age));
 
 %Using the follwoing code, we find out how many people who got herat
 %failure had diabetes and how many did not have diabetes 
@@ -30,8 +23,7 @@ for a = 1 : length(diabetes)
     end
     
 end
-haveDiabetes
-noDiabetes
+
 
 %Using the follwoing code, we find out how many people who got herat
 %failure were smoking and how many were not smoking  
@@ -49,8 +41,7 @@ for b = 1 : length(smoking)
     end
     
 end
-wereSmoking
-notSmoking
+
 
 %Using the follwoing code, we find out how many people who got herat
 %failure dead and how many lived  
@@ -67,8 +58,6 @@ for c = 1 : length(deathEvent)
         
     end    
 end
-yesDead
-notDead
 
 %Using the follwoing code, we find out how many people who got herat
 %failure were adult and how many were elders 
@@ -90,8 +79,7 @@ for d = 1 : length(age)
         
     end    
 end
-adult
-elders
+
 
 %Here, we plot our data using pie chart 
 plotDi(1) = haveDiabetes;
@@ -124,4 +112,3 @@ legend('Dead','Not Dead');
 subplot(2,2,4);
 pie(plotAg);
 legend('65+','55 > && < 65','<55')
-
