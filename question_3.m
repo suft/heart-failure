@@ -8,6 +8,12 @@ smoking = csv(:, 11);
 deathEvent = csv(:, 13);
 age = csv(:,1);
 
+%Validity and Outlier check
+age_out = find(isoutlier(age'));
+invalid_age = find(age < 0);
+fprintf('Age Outlier Indexes -> %s\n', mat2str(age_out));
+fprintf('Invalid Ages: %i\n', length(invalid_age));
+
 %Using the follwoing code, we find out how many people who got herat
 %failure had diabetes and how many did not have diabetes 
 haveDiabetes = 0;
