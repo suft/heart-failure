@@ -6,7 +6,7 @@
 
 %importing the data set 
 
-csv = xlsread('heart_failure_clinical_records_dataset.xlsx');
+csv = readmatrix('heart_failure_clinical_records_dataset.csv');
 
 % reading the variables
 age = csv(:, 1);
